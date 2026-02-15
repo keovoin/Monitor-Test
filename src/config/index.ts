@@ -2,6 +2,7 @@
 // For variant-specific builds, set VITE_VARIANT environment variable
 // VITE_VARIANT=tech → tech.worldmonitor.app (tech-focused)
 // VITE_VARIANT=full → worldmonitor.app (geopolitical)
+// VITE_VARIANT=cambodia → Cambodia-focused monitoring
 
 export { SITE_VARIANT } from './variant';
 
@@ -41,6 +42,28 @@ export {
   DEFAULT_MAP_LAYERS,
   MOBILE_DEFAULT_MAP_LAYERS,
 } from './panels';
+
+// ============================================
+// CAMBODIA VARIANT EXPORTS
+// ============================================
+export {
+  CAMBODIA_MAP_VIEW,
+  CAMBODIA_REGION_BOUNDS,
+  MONITORED_COUNTRIES,
+  CAMBODIA_KEYWORDS,
+  GLOBAL_IMPACT_KEYWORDS,
+  THAILAND_CAMBODIA_KEYWORDS,
+  RELEVANT_ASIAN_COUNTRIES,
+  CAMBODIA_FOCUSED_FEEDS,
+  isCambodiaRelevant,
+  isInCambodiaRegion,
+  CAMBODIA_STRATEGIC_LOCATIONS,
+  CAMBODIA_BORDERS,
+  ECONOMIC_CORRIDORS,
+  CAMBODIA_ALERT_PRIORITIES,
+  CAMBODIA_PANELS,
+  CAMBODIA_THEME,
+} from './cambodia-config';
 
 // ============================================
 // VARIANT-SPECIFIC EXPORTS
