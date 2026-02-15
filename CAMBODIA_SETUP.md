@@ -1,371 +1,477 @@
 # Cambodia Monitor Setup Guide
 
-This guide explains how to configure World Monitor to focus exclusively on Cambodia and relevant regional context.
-
 ## Overview
 
-The Cambodia Monitor variant filters and focuses the dashboard to show:
-- **Cambodia-specific news and events**
-- **Regional context** from Thailand, Vietnam, Laos, and other ASEAN countries
-- **Economic corridors** affecting Cambodia (Southern Economic Corridor, Belt & Road)
-- **Border monitoring** for Thailand-Cambodia, Vietnam-Cambodia, and Laos-Cambodia borders
-- **Strategic locations** including Phnom Penh, Sihanoukville Port, Siem Reap, and key border crossings
-- **Infrastructure projects** in Cambodia and neighboring regions
+This guide explains how to configure and use the Cambodia-focused variant of World Monitor. This variant is specifically designed to monitor:
+
+- 🇰🇭 **Cambodia**: All domestic news, politics, economy, infrastructure
+- 🇹🇭 **Thailand**: News specifically related to Cambodia or border issues
+- 🌏 **ASEAN**: Regional developments impacting Cambodia
+- 🌍 **Global**: Any international news mentioning or affecting Cambodia
 
 ## Quick Start
 
-### 1. Copy Cambodia Environment Configuration
+### Development Mode
 
 ```bash
-cp .env.cambodia .env.local
+# Run Cambodia variant in development
+npm run dev:cambodia
+
+# Or with Vercel CLI (recommended for full API functionality)
+VITE_VARIANT=cambodia vercel dev
 ```
 
-### 2. Edit `.env.local` and Add Your API Keys
+Open [http://localhost:3000](http://localhost:3000) - the map will automatically center on Cambodia.
 
-The file contains placeholders for all API keys. See the main README for registration links.
-
-**Minimum Required:**
-- No API keys are strictly required for basic functionality
-- For full features, add: `GROQ_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
-
-### 3. Run the Application
+### Production Build
 
 ```bash
-# Install dependencies
-npm install
+# Build Cambodia variant
+npm run build:cambodia
 
-# Run with Vercel CLI (recommended - includes all API functions)
-vercel dev
-
-# OR run frontend only (limited functionality)
-npm run dev
+# Preview the build
+npm run preview
 ```
 
-### 4. Access the Dashboard
+### Desktop Application
 
-Open [http://localhost:3000](http://localhost:3000)
+```bash
+# Run desktop app in dev mode
+npm run desktop:dev:cambodia
 
-The map will automatically center on Cambodia at zoom level 7.
+# Build desktop app
+npm run desktop:build:cambodia
 
-## Configuration Details
+# Package for macOS
+npm run desktop:package:macos:cambodia
 
-### Map View Settings
+# Package for Windows
+npm run desktop:package:windows:cambodia
+```
 
-The Cambodia variant centers the map on:
-- **Latitude:** 12.5657 (Central Cambodia)
-- **Longitude:** 104.991 (Phnom Penh area)
-- **Zoom:** 7 (Country-level view)
+## Configuration Files
 
-### Regional Bounds
+The Cambodia variant uses these configuration files:
 
-Events and news are filtered to the Southeast Asian region:
-- **North:** 23.0° (Southern China)
-- **South:** 8.0° (Southern Thailand/Malaysia)
-- **East:** 110.0° (Vietnam coast)
-- **West:** 97.0° (Myanmar border)
+### Core Configuration
+- **`src/config/cambodia-config.ts`** - Main Cambodia settings
+  - Map view centered on Cambodia (12.5657°N, 104.991°E)
+  - Regional bounds (Myanmar to Vietnam, Thailand to Malaysia)
+  - Cambodia-specific keywords and filters
+  - Strategic locations within Cambodia
+  - Border monitoring configuration
+  - RSS feeds focused on Cambodia
 
-### Monitored Countries
+- **`src/config/variants/cambodia.ts`** - Variant-specific overrides
+  - Default map layers
+  - Panel visibility
+  - Feature flags
+  - Alert configuration
 
-1. **Cambodia** (Primary focus)
-2. **Thailand** (Western neighbor)
-3. **Vietnam** (Eastern neighbor)
-4. **Laos** (Northern neighbor)
-5. **Myanmar** (Regional context)
-6. **China** (Major economic partner)
-7. **Malaysia** (ASEAN partner)
-8. **Singapore** (Regional hub)
+### Variant Selection
+- **`src/config/variant.ts`** - Handles variant switching
 
-## News Filtering
+## Key Features
 
-### Relevance Scoring (0-100)
+### 1. Geographic Focus
 
-News items are automatically scored based on:
+The map automatically centers on Cambodia with appropriate zoom level:
 
-| Criteria | Score |
-|----------|-------|
-| Direct Cambodia mention | +50 |
-| Major cities (Phnom Penh, Siem Reap, Sihanoukville) | +30 |
-| Neighbor countries (Thailand, Vietnam, Laos) | +20 |
-| China (major partner) | +15 |
-| Security/political keywords | +15 |
-| ASEAN/Mekong context | +10 |
-| Economic keywords | +10 |
-| Located in Cambodia region | +10 |
+```typescript
+Cambodian Map View:
+- Latitude: 12.5657°N
+- Longitude: 104.991°E
+- Zoom: 7.5 (country-level detail)
+```
 
-### Relevance Categories
+**Regional Context Area:**
+- North: 23.0°N (Southern China)
+- South: 8.0°N (Southern Thailand/Malaysia)
+- East: 110.0°E (Vietnam coast)
+- West: 97.0°E (Myanmar border)
 
-- **Critical (70-100):** Direct Cambodia impact
-- **High (50-69):** Regional impact affecting Cambodia
-- **Medium (30-49):** Indirect relevance
-- **Low (<30):** Tangential (filtered out by default)
+### 2. Strategic Locations Monitored
 
-### Included Keywords
+#### Critical Priority:
+- **Phnom Penh** - Capital and economic center
+- **Sihanoukville Port** - Primary deep-water port, major Chinese investment
+- **Ream Naval Base** - Naval base with Chinese development
 
-The system filters news containing:
-- Direct: Cambodia, Cambodian, Phnom Penh, Siem Reap, Sihanoukville
-- Regional: Thailand Cambodia, Vietnam Cambodia, China Cambodia
-- Economic: Southern Economic Corridor, Greater Mekong Subregion, Belt and Road Cambodia
-- Borders: Preah Vihear, Thai-Cambodia border, Mekong River
-- Industries: Cambodia garment, Cambodia tourism, Cambodia construction
-- Infrastructure: Cambodia railway, Cambodia port, Cambodia airport
+#### High Priority:
+- **Siem Reap (Angkor)** - Tourism hub
+- **Poipet Border Crossing** - Main Cambodia-Thailand crossing
+- **Bavet Border Crossing** - Main Cambodia-Vietnam crossing
+- **Phnom Penh International Airport** - Main international gateway
 
-## Strategic Locations
+#### Medium Priority:
+- **Battambang** - Second largest city, agricultural hub
+- **Siem Reap Airport** - Tourism gateway
+- **Kampong Som (Sihanoukville)** - Coastal city, special economic zone
 
-The following locations are highlighted on the map:
+### 3. Border Monitoring
 
-### Critical Priority
-1. **Phnom Penh** - Capital city
-2. **Sihanoukville Port** - Major seaport
-3. **Ream Naval Base** - Military facility (China partnership)
+Three borders are actively monitored:
 
-### High Priority
-4. **Siem Reap (Angkor Wat)** - Tourism hub
-5. **Poipet Border Crossing** - Thailand border (largest crossing)
-6. **Bavet Border Crossing** - Vietnam border (major trade route)
-7. **Phnom Penh International Airport**
+#### Cambodia-Thailand Border (817 km) - CRITICAL
+- **Hotspots**: Preah Vihear Temple, Poipet, O Smach, Pailin
+- **Issues**: Border disputes, Human trafficking, Trade smuggling
 
-### Medium Priority
-8. **Siem Reap International Airport**
-9. Other provincial capitals and infrastructure
+#### Cambodia-Vietnam Border (1,158 km) - HIGH
+- **Hotspots**: Bavet, Kaam Samnor, Trapeang Phlong
+- **Issues**: Border demarcation, Fishing disputes, Trade corridor
 
-## Border Monitoring
+#### Cambodia-Laos Border (555 km) - MEDIUM
+- **Hotspots**: Stung Treng, Preah Vihear
+- **Issues**: Mekong River management, Cross-border trade
 
-### Cambodia-Thailand Border
-- **Length:** 817 km
-- **Priority:** Critical
-- **Hotspots:** Preah Vihear Temple, Poipet, O Smach
-- **Issues:** Temple disputes, smuggling, trade
+### 4. Economic Corridors
 
-### Cambodia-Vietnam Border
-- **Length:** 1,158 km
-- **Priority:** High
-- **Hotspots:** Bavet, Kaam Samnor, Trapeang Phlong
-- **Issues:** Border demarcation, trade, migration
+#### Southern Economic Corridor (Critical)
+- **Route**: Bangkok → Phnom Penh → Ho Chi Minh City → Vung Tau
+- **Countries**: Thailand, Cambodia, Vietnam
+- **Status**: Active
 
-### Cambodia-Laos Border
-- **Length:** 555 km
-- **Priority:** Medium
-- **Hotspots:** Stung Treng, Preah Vihear
-- **Issues:** Mekong River development, hydropower
+#### Southern Coastal Corridor (High)
+- **Route**: Dawei → Kanchanaburi → Phnom Penh → Ho Chi Minh City → Vung Tau
+- **Countries**: Thailand, Cambodia
+- **Status**: Under Development
 
-## Economic Corridors
+#### GMS North-South Economic Corridor (High)
+- **Route**: Kunming → Chiang Rai → Bangkok → Phnom Penh
+- **Countries**: China, Laos, Thailand, Cambodia
+- **Status**: Active
 
-### Southern Economic Corridor (Critical)
-- **Route:** Bangkok → Phnom Penh → Ho Chi Minh City → Vung Tau
-- **Countries:** Thailand, Cambodia, Vietnam
-- **Impact:** Major trade route, infrastructure development
+### 5. News Feed Filtering
 
-### Southern Coastal Corridor (High)
-- **Route:** Dawei → Kanchanaburi → Phnom Penh → Ho Chi Minh City → Vung Tau
-- **Countries:** Thailand, Cambodia
-- **Impact:** Alternative trade route, port development
+The system uses intelligent filtering to show only Cambodia-relevant news:
 
-## RSS Feeds
+#### Direct Cambodia Mentions
+Automatically includes any news mentioning:
+- Cambodia, Cambodian, Phnom Penh, Siem Reap, Sihanoukville
+- Mekong, Tonle Sap, ASEAN
+- Hun Sen, Hun Manet, Cambodian politics
+- Specific locations: Battambang, Kampot, Koh Kong, etc.
 
-### Cambodia-Specific Sources
+#### Thailand News Filtering
+From Thai sources, only includes news with:
+- Thailand-Cambodia bilateral mentions
+- Border-related content
+- Trade corridor updates
+- Bangkok-Phnom Penh connections
 
-1. **Phnom Penh Post** - Leading English newspaper
-   - `https://www.phnompenhpost.com/rss`
+#### Global Impact Keywords
+- ASEAN summit, meeting, agreement
+- Mekong cooperation, development
+- Southeast Asia trade, security
+- Indo-Pacific, Regional partnerships
 
-2. **Khmer Times** - Daily news
-   - `https://www.khmertimeskh.com/feed/`
+#### Context Requirements
+For non-Cambodia sources, news must mention:
+- Monitored countries (Thailand, Vietnam, China, etc.) AND
+- Relevant context (trade, border, security, investment, etc.)
 
-3. **VOA Cambodia** - Voice of America Cambodia
-   - `https://www.voacambodia.com/api/zr$oteuoi`
+### 6. RSS Feed Sources
 
-### Regional Context
+#### Cambodia-Specific (Tier 1-2)
+- **Phnom Penh Post** - Leading English newspaper
+- **Khmer Times** - Daily English news
+- **VOA Cambodia** - Voice of America Cambodia service
 
-4. **The Diplomat** - Asian geopolitics
-5. **Nikkei Asia** - Asian business news
-6. **Bangkok Post** - Thailand news (border context)
-7. **VnExpress International** - Vietnam news
-8. **ASEAN Official** - Official ASEAN news
-9. **The ASEAN Post** - Regional analysis
+#### Regional Context
+**Thailand:**
+- Bangkok Post
+- The Nation Thailand
+
+**Vietnam:**
+- VnExpress International
+- Vietnam News
+
+**Regional Analysis:**
+- The Diplomat (Asia)
+- Nikkei Asia
+- South China Morning Post
+
+**ASEAN Focus:**
+- ASEAN Official Feed
+- The ASEAN Post
+
+**Global (Asia-filtered):**
+- Reuters Asia
+- BBC Asia
+- Al Jazeera (filtered for Asia)
+
+## Map Layers
+
+Default layers enabled for Cambodia monitoring:
+
+- ✅ **Conflicts** - Regional conflicts
+- ✅ **Protests** - Social unrest events
+- ✅ **Military Bases** - Including Ream Naval Base
+- ✅ **Infrastructure** - Ports, airports, borders
+- ✅ **Undersea Cables** - Sihanoukville connections
+- ✅ **Earthquakes** - Natural disaster monitoring
+- ✅ **Fires** - Forest fires, land clearing detection
+
+## Panels Configuration
+
+### Enabled Panels
+- **Cambodia News** - Cambodia-specific news feed
+- **Regional News** - ASEAN & neighboring countries
+- **Thailand News** - Thailand news (Cambodia-relevant only)
+- **Border Monitor** - Border activity and incidents
+- **Economic Updates** - Trade & investment news
+- **Infrastructure** - Development projects
+- **Mekong Monitor** - Mekong River issues
+- **Map** - Interactive map centered on Cambodia
+
+### Disabled Panels
+- ❌ Global Conflicts (not relevant)
+- ❌ NATO Tracker (not relevant)
+- ❌ Middle East (not relevant)
+- ❌ Ukraine Tracker (not relevant)
+- ❌ Crypto Markets (optional - can be enabled)
+
+## Alert Priorities
+
+### Critical Alerts
+- Border conflict
+- Political crisis
+- Natural disaster
+- Major infrastructure damage
+- Diplomatic incident
+- Coup
+- Civil unrest
+- Terrorist attack
+
+### High Priority Alerts
+- Trade policy change
+- Major investment announcement
+- Tourism impact events
+- Currency fluctuation
+- Regional security issues
+- Border tension
+- Mekong disputes
+- ASEAN disagreements
+
+### Medium Priority Alerts
+- Economic indicators
+- Infrastructure project updates
+- Political appointments
+- Cultural events
+- Environmental issues
+- Trade statistics
 
 ## Customization
 
-### Add Custom Keywords
+### Adding Custom Keywords
 
 Edit `src/config/cambodia-config.ts`:
 
 ```typescript
 export const CAMBODIA_KEYWORDS = [
   // Add your custom keywords here
-  'your-keyword-1',
-  'your-keyword-2',
+  'Your Custom Keyword',
+  'Another Keyword',
+  // ...
 ];
 ```
 
-### Adjust Regional Bounds
+### Adjusting Map View
 
-Edit `.env.local`:
-
-```bash
-VITE_REGION_NORTH=23.0  # Expand or contract north boundary
-VITE_REGION_SOUTH=8.0   # Expand or contract south boundary
-VITE_REGION_EAST=110.0  # Expand or contract east boundary
-VITE_REGION_WEST=97.0   # Expand or contract west boundary
-```
-
-### Change Minimum Relevance Score
-
-Edit `.env.local`:
-
-```bash
-VITE_MIN_RELEVANCE_SCORE=25  # Lower = more permissive, Higher = more strict
-```
-
-### Add More Monitored Countries
-
-Edit `.env.local`:
-
-```bash
-VITE_MONITORED_COUNTRIES=Cambodia,Thailand,Vietnam,Laos,Myanmar,China,Malaysia,Singapore,Indonesia
-```
-
-## Filtering API
-
-### Import Cambodia Filters
+Change default map position:
 
 ```typescript
-import { CambodiaFilters } from './utils/cambodia-filter';
-
-// Filter news items
-const relevantNews = CambodiaFilters.filterNews(allNews);
-
-// Sort by relevance
-const sortedNews = CambodiaFilters.sortByRelevance(relevantNews);
-
-// Categorize by priority
-const categorized = CambodiaFilters.categorize(allNews);
-console.log(categorized.critical);  // High-priority items
-console.log(categorized.high);      // Medium-priority items
-
-// Filter geographic events
-const regionalEvents = CambodiaFilters.filterEvents(allEvents);
-
-// Find events near borders
-const borderEvents = CambodiaFilters.findBorderEvents(allEvents, 50); // 50km radius
-```
-
-### Calculate Relevance Score
-
-```typescript
-import { calculateRelevanceScore } from './utils/cambodia-filter';
-
-const newsItem = {
-  title: "Cambodia and Thailand sign border trade agreement",
-  description: "New agreement to boost bilateral trade..."
+export const CAMBODIA_MAP_VIEW = {
+  latitude: 12.5657,  // Your desired latitude
+  longitude: 104.991, // Your desired longitude
+  zoom: 7.5,          // Your desired zoom (1-20)
+  pitch: 0,
+  bearing: 0,
 };
-
-const score = calculateRelevanceScore(newsItem);
-// Returns: 95 (high relevance)
 ```
 
-## Data Layers
+### Adding RSS Feeds
 
-The following map layers are enabled by default:
+Add new feeds to `CAMBODIA_FOCUSED_FEEDS` array:
 
-### Always Visible
-- Cambodia country border
-- Strategic locations (cities, ports, airports)
-- Border crossings
-- Major infrastructure
+```typescript
+{
+  url: 'https://your-feed-url.com/rss',
+  name: 'Feed Name',
+  tier: 2, // 1 = wire service, 2 = major outlet, 3 = niche
+  type: 'news', // news, geopolitical, economic, etc.
+  region: 'Cambodia',
+}
+```
 
-### Toggleable Layers
-- Military bases (regional)
-- Economic corridors
-- Infrastructure projects
-- Border monitoring zones
-- News event markers
-- Protest/unrest events
-- Natural disasters
-- Internet outages
+### Modifying Regional Bounds
 
-## Alert Priorities
+Adjust the monitoring area:
 
-### Critical Alerts
-- Border conflicts
-- Political crises
-- Natural disasters
-- Major infrastructure damage
-- Diplomatic incidents
+```typescript
+export const CAMBODIA_REGION_BOUNDS = {
+  north: 23.0,  // Northern limit
+  south: 8.0,   // Southern limit
+  east: 110.0,  // Eastern limit
+  west: 97.0,   // Western limit
+};
+```
 
-### High Alerts
-- Trade policy changes
-- Investment announcements
-- Tourism impacts
-- Currency fluctuations
-- Regional security events
+## Environment Variables
 
-### Medium Alerts
-- Economic indicators
-- Infrastructure project updates
-- Cultural events
-- Environmental issues
+Create `.env.local` file:
+
+```bash
+# Variant selection
+VITE_VARIANT=cambodia
+
+# Map interaction mode
+VITE_MAP_INTERACTION_MODE=3d  # or 'flat'
+
+# API keys (optional but recommended)
+GROQ_API_KEY=your_groq_key
+UPSTASH_REDIS_REST_URL=your_redis_url
+UPSTASH_REDIS_REST_TOKEN=your_redis_token
+
+# Additional API keys
+ACLED_ACCESS_TOKEN=your_acled_token
+FINNHUB_API_KEY=your_finnhub_key
+# ... (see .env.example for complete list)
+```
 
 ## Deployment
 
-### Deploy to Vercel
+### Vercel Deployment
+
+1. Push your changes to GitHub
+2. Connect repository to Vercel
+3. Set environment variable:
+   ```
+   VITE_VARIANT=cambodia
+   ```
+4. Deploy
+
+### Custom Domain
+
+Configure your domain (e.g., `cambodia.worldmonitor.app`):
+
+1. Add domain in Vercel dashboard
+2. Set DNS records
+3. Enable HTTPS
+
+## Switching Between Variants
+
+### At Build Time
 
 ```bash
-# Set environment variable for Cambodia variant
-vercel env add VITE_VARIANT
-# Enter: cambodia
+# Full variant (global geopolitical)
+npm run dev
+npm run build:full
 
-# Deploy
-vercel --prod
+# Tech variant (technology focus)
+npm run dev:tech
+npm run build:tech
+
+# Cambodia variant (Cambodia focus)
+npm run dev:cambodia
+npm run build:cambodia
 ```
 
-### Deploy with Custom Domain
+### At Runtime (in browser)
 
-```bash
-vercel --prod
-vercel alias <deployment-url> cambodia-monitor.yourdomain.com
+Open browser console and run:
+
+```javascript
+// Switch to Cambodia variant
+localStorage.setItem('worldmonitor-variant', 'cambodia');
+location.reload();
+
+// Switch to full variant
+localStorage.setItem('worldmonitor-variant', 'full');
+location.reload();
+
+// Switch to tech variant
+localStorage.setItem('worldmonitor-variant', 'tech');
+location.reload();
 ```
 
 ## Troubleshooting
 
-### No News Appearing
-1. Check that `.env.local` has `VITE_VARIANT=cambodia`
-2. Lower `VITE_MIN_RELEVANCE_SCORE` to see more results
-3. Verify RSS feeds are accessible (some may be geo-restricted)
+### Map Not Centering on Cambodia
 
-### Map Not Centered on Cambodia
-1. Verify `.env.local` has correct coordinates:
-   ```
-   VITE_DEFAULT_LAT=12.5657
-   VITE_DEFAULT_LON=104.991
-   ```
-2. Clear browser cache and reload
+Check that `VITE_VARIANT=cambodia` is set:
+- In `.env.local` file
+- Or via command: `VITE_VARIANT=cambodia npm run dev`
 
-### Too Much/Too Little Content
-- **Too much:** Increase `VITE_MIN_RELEVANCE_SCORE` (e.g., 40)
-- **Too little:** Decrease `VITE_MIN_RELEVANCE_SCORE` (e.g., 15)
-- Adjust `CAMBODIA_KEYWORDS` in `src/config/cambodia-config.ts`
+### No News Showing
 
-## Additional Resources
+1. Verify RSS feeds are accessible
+2. Check browser console for errors
+3. Ensure Vercel CLI is running (`vercel dev`) for API endpoints
+4. Check if feeds require API keys
 
-- **Main README:** [README.md](./README.md) - Full system documentation
-- **Config File:** [src/config/cambodia-config.ts](./src/config/cambodia-config.ts)
-- **Filter Utils:** [src/utils/cambodia-filter.ts](./src/utils/cambodia-filter.ts)
-- **Environment:** [.env.cambodia](./.env.cambodia)
+### Filtering Too Aggressive/Permissive
 
-## Support
+Adjust the `isCambodiaRelevant()` function in `src/config/cambodia-config.ts`:
 
-For issues or questions:
-1. Check existing GitHub issues
-2. Create new issue with "Cambodia variant" label
-3. Include your `.env.local` configuration (without API keys)
+```typescript
+// More permissive (show more news)
+if (CAMBODIA_KEYWORDS.some(keyword => 
+  text.includes(keyword.toLowerCase())
+)) {
+  return true;
+}
+
+// More aggressive (show less news)
+if (CAMBODIA_KEYWORDS.filter(keyword => 
+  text.includes(keyword.toLowerCase())
+).length >= 2) { // Require 2+ keyword matches
+  return true;
+}
+```
+
+### Desktop App Issues
+
+Ensure Tauri is installed:
+
+```bash
+# Install Tauri CLI
+npm install -g @tauri-apps/cli
+
+# Verify installation
+tauri --version
+```
+
+## Testing
+
+```bash
+# Run E2E tests for Cambodia variant
+npm run test:e2e:cambodia
+
+# Run all tests
+npm test
+```
 
 ## Contributing
 
-To improve Cambodia-specific features:
-1. Edit configuration files in `src/config/`
-2. Update filtering logic in `src/utils/cambodia-filter.ts`
-3. Add Cambodia-specific RSS feeds to `CAMBODIA_FOCUSED_FEEDS`
-4. Submit pull request with description
+To add features to the Cambodia variant:
+
+1. Edit `src/config/cambodia-config.ts` for data
+2. Edit `src/config/variants/cambodia.ts` for settings
+3. Test with `npm run dev:cambodia`
+4. Submit PR with clear description
+
+## Support
+
+For issues specific to the Cambodia variant:
+- Open an issue on GitHub
+- Tag with `variant:cambodia`
+- Provide logs and error messages
+
+## License
+
+MIT License - see LICENSE file for details
 
 ---
 
-**Note:** This variant inherits all core functionality from World Monitor while adding Cambodia-specific filtering and focus. All original features remain available.
+**Cambodia Monitor** - Real-time intelligence for Cambodia and the region
